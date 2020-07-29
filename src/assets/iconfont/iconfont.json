@@ -1,0 +1,37 @@
+{
+  "id": "1908472",
+  "name": "Mall",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3092778",
+      "name": "购物车",
+      "font_class": "gouwuche",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "4937514",
+      "name": "分类",
+      "font_class": "fenlei",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "11544942",
+      "name": "我 的",
+      "font_class": "wode",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "12667730",
+      "name": "首 页",
+      "font_class": "shouye",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    }
+  ]
+}
