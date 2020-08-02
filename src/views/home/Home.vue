@@ -16,7 +16,12 @@
       @scroll="contentScroll"
       @pullingUp="loadMore"
     >
-      <home-swiper class="home-swiper" :banners="banners" @bannersLoad="bannersLoad" />
+      <home-swiper
+        v-if="banners.length > 0"
+        class="home-swiper"
+        :banners="banners"
+        @bannersLoad="bannersLoad"
+      />
       <home-recommend :recommends="recommends" />
       <feature-view />
       <nav-bar ref="navbarScroll" @navbarClick="navbarClick" :titles="['流行', '新款', '精选']" />

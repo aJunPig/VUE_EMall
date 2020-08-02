@@ -2,7 +2,7 @@
   <div id="detail">
     <detail-header-bar class="headerBar" @headerClick="headerClick" ref="headerBar" />
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
-      <detail-swiper :banners="banners" />
+      <detail-swiper v-if="banners.length > 0" :banners="banners" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad" />
