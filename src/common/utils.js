@@ -1,4 +1,4 @@
-export function debounce(func, delay) {
+export function debounce(func, delay = 200) {
   let timer = null;
   return function(...args) {
     if (timer) clearTimeout(timer);
@@ -6,6 +6,35 @@ export function debounce(func, delay) {
       func.apply(this, args);
     }, delay);
   };
+}
+
+export function throttle(fn, wait = 100, immediate = false) {
+  var flag = true;
+  var timer = null;
+  var result;
+  var _throttle = function(...args) {
+    var context = this;
+    if (immediate) {
+      if (flag) {
+        result = fn.apply(context, args);
+        flag = false;
+        timer = setTimeout(() => {
+          flag = true;
+        }, wait);
+      }
+    } else {
+      if (flag) {
+        flag = false;
+        timer = setTimeout(() => {
+          fn.apply(context, args);
+          flag = true;
+        }, wait);
+      }
+    }
+    return result;
+  };
+  console.log('throttle');
+  return _throttle;
 }
 
 export function formatDate(date, fmt) {

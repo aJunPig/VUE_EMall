@@ -28,6 +28,19 @@ const mutations = {
       });
     }
   },
+  deleteGoods(state, payload) {
+    state.cartList.splice(payload, 1);
+  },
+  numOperation(state, payload) {
+    // 分3种情况：输入域变更，加减号变更
+    if (payload.type == 'text') {
+      state.cartList[payload.index].count = payload.num;
+    } else if (payload.type == 'dec') {
+      state.cartList[payload.index].count -= 1;
+    } else {
+      state.cartList[payload.index].count += 1;
+    }
+  },
 };
 
 export default mutations;

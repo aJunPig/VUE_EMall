@@ -10,8 +10,15 @@
       <div class="item-title">{{ itemInfo.title }}</div>
       <div class="item-desc">商品描述: {{ itemInfo.desc }}</div>
       <div class="info-bottom">
-        <div class="item-price left">¥{{ itemInfo.price }}</div>
-        <div class="item-count right">x{{ itemInfo.count }}</div>
+        <div class="item-price">¥{{ itemInfo.price }}</div>
+        <div class="item-count">
+          <change-num
+            :num="itemInfo.count"
+            :index="index"
+            @cart-del="deleteGoods"
+            @cart-changeNum="numOperation"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -19,6 +26,7 @@
 
 <script>
 import CheckButton from './CheckButton';
+import ChangeNum from 'components/content/cartChangeNum/ChangeNum';
 
 export default {
   props: {
@@ -27,6 +35,7 @@ export default {
   },
   components: {
     CheckButton,
+    ChangeNum,
   },
   computed: {
     checked() {
@@ -36,6 +45,17 @@ export default {
   methods: {
     checkedChange() {
       this.$store.dispatch('checkedChange', this.itemInfo);
+    },
+    deleteGoods() {
+      this.$store.dispatch('deleteGoods', this.index);
+    },
+    numOperation(params) {
+      let payload = {
+        type: params.type,
+        num: params.num,
+        index: this.index,
+      };
+      this.$store.dispatch('numOperation', payload);
     },
   },
 };
@@ -51,7 +71,6 @@ export default {
 }
 
 .item-selector {
-  width: 14%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,6 +110,8 @@ export default {
 }
 
 .info-bottom {
+  display: flex;
+  align-items: baseline;
   margin-top: 10px;
   position: absolute;
   bottom: 10px;
@@ -100,5 +121,9 @@ export default {
 
 .info-bottom .item-price {
   color: orangered;
+  width: 30%;
+}
+.info-bottom .item-count {
+  width: 70%;
 }
 </style>

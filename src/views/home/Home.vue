@@ -13,7 +13,7 @@
       ref="scroll"
       :probe-type="3"
       :pull-upload="true"
-      @scroll="contentScroll"
+      @scroll="throttleScroll"
       @pullingUp="loadMore"
     >
       <home-swiper
@@ -45,6 +45,7 @@ import FeatureView from './childComponents/FeatureView';
 
 // import { debounce } from 'common/utils';
 import { itemListenerMixin, backTopMixin } from 'common/mixins';
+import { throttle } from 'common/utils';
 
 // 请求数据
 import { getHomeMultiData, getHomeGoods } from 'network/home';
@@ -73,6 +74,7 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
+      throttleScroll: () => {},
     };
   },
   computed: {
@@ -98,6 +100,7 @@ export default {
       this.$refs.navbarScroll.curIndex = index;
     },
     contentScroll(position) {
+      //   console.log('throttle');
       // 判断backTop按钮是否显示
       this.listenIsShowBackTop(position);
       //   判断navbar是否吸顶，fixed
@@ -133,13 +136,9 @@ export default {
     this.getHomeGoods('pop');
     this.getHomeGoods('new');
     this.getHomeGoods('sell');
+
+    this.throttleScroll = throttle(this.contentScroll, 1000, true);
   },
-  //   mounted() {
-  //     //  监听item图片加载完成
-  //     const refresh = debounce(this.$refs.scroll.refresh, 200);
-  //     this.goodsImageListener = () => refresh();
-  //     this.$bus.$on('imgLoad', this.goodsImageListener);
-  //   },
   activated() {
     this.$refs.scroll.refresh();
     this.$refs.scroll.scrollTo(0, this.saveY, 0);

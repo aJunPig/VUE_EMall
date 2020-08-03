@@ -1,7 +1,7 @@
 <template>
   <div id="detail">
     <detail-header-bar class="headerBar" @headerClick="headerClick" ref="headerBar" />
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+    <scroll class="content" ref="scroll" @scroll="throttleScroll" :probeType="3">
       <detail-swiper v-if="banners.length > 0" :banners="banners" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
@@ -31,6 +31,7 @@ import DetailFooterBar from './childComponents/DetailFooterBar';
 import { getDetail, getRecommend, Goods, Shop, GoodsParam } from 'network/detail';
 import { itemListenerMixin, backTopMixin } from 'common/mixins';
 import { debounce } from 'common/utils';
+import { throttle } from 'common/utils';
 
 export default {
   name: 'Detail',
@@ -60,6 +61,7 @@ export default {
       headerOffsetTop: [],
       getHeaderOffsetTop: null,
       currentIndex: 0,
+      throttleScroll: () => {},
     };
   },
   methods: {
@@ -72,7 +74,6 @@ export default {
     },
     contentScroll(position) {
       const positionY = -position.y;
-
       let length = this.headerOffsetTop.length;
       //   法1：由于最后一个i的i+1越界，因此分为两种情况判断
       //   for (let i = 0; i < length; i++) {
@@ -87,6 +88,7 @@ export default {
       //       this.$refs.headerBar.currentIndex = this.currentIndex;
       //     }
       //   }
+
       // 法2：给this.headerOffsetTop最后加一个无限大的值，就可以归为一种情况
       for (let i = 0; i < length - 1; i++) {
         if (
@@ -95,7 +97,7 @@ export default {
           positionY < this.headerOffsetTop[i + 1]
         ) {
           this.currentIndex = i;
-          this.$refs.headerBar.currentIndex = this.currentIndex;
+          this.$refs.headerBar.curIndex = this.currentIndex;
         }
       }
       this.listenIsShowBackTop(position);
@@ -136,26 +138,21 @@ export default {
       }
     });
 
-    // this.$nextTick(() => {
-    //   this.headerOffsetTop = [];
-    //   this.headerOffsetTop.push(0);
-    //   this.headerOffsetTop.push(this.$refs.param.$el.offsetTop);
-    //   this.headerOffsetTop.push(this.$refs.comment.$el.offsetTop);
-    //   this.headerOffsetTop.push(this.$refs.recommend.$el.offsetTop);
-    // });
-
     getRecommend().then(res => {
       this.recommend = res.data.list;
     });
 
+    this.throttleScroll = throttle(this.contentScroll, 1000, true);
+
     this.getHeaderOffsetTop = debounce(() => {
+      console.log('getHeaderOffsetTop');
       this.headerOffsetTop = [];
       this.headerOffsetTop.push(0);
       this.headerOffsetTop.push(this.$refs.param.$el.offsetTop - 44);
       this.headerOffsetTop.push(this.$refs.comment.$el.offsetTop - 44);
       this.headerOffsetTop.push(this.$refs.recommend.$el.offsetTop - 44);
       this.headerOffsetTop.push(Number.MAX_VALUE);
-    });
+    }, 100);
   },
   destroyed() {
     this.$bus.$off('imgLoad', this.goodsImageListener);

@@ -9,7 +9,11 @@ import FastClick from 'fastclick';
 
 Vue.config.productionTip = false;
 
-Vue.use(VueLazyload);
+Vue.use(VueLazyload, {
+  preLoad: 1.6,
+  loading: require('./assets/img/loading.gif'),
+  //   listenEvents: ['scroll'],
+});
 Vue.prototype.$bus = new Vue();
 Vue.use(toast);
 FastClick.attach(document.body);

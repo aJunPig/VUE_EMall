@@ -7,8 +7,8 @@
       <div slot="center" class="title">
         <div
           v-for="(item, index) in headerTitles"
-          :key="index"
-          :class="{ active: index === currentIndex }"
+          :key="item"
+          :class="{ active: index === curIndex }"
           @click="titleClick(index)"
         >
           {{ item }}
@@ -27,12 +27,12 @@ export default {
   data() {
     return {
       headerTitles: ['商品', '参数', '评论', '推荐'],
-      currentIndex: 0,
+      curIndex: 0,
     };
   },
   methods: {
     titleClick(index) {
-      this.currentIndex = index;
+      this.curIndex = index;
       this.$emit('headerClick', index);
     },
     goBackClick() {

@@ -11,14 +11,6 @@ export default {
     GoodsListItem,
   },
   props: ['goods'],
-  //   {
-  // goods: {
-  //   type: Array,
-  //   default() {
-  //     return [];
-  //   },
-  // },
-  //   },
 };
 </script>
 

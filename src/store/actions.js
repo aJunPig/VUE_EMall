@@ -25,8 +25,18 @@ const actions = {
     commit(CHECKED_CHANGE, payload);
   },
 
+  // 全选键
   changeSelect({ commit }) {
     commit('changeSelect');
+  },
+
+  //删除商品
+  deleteGoods({ commit }, payload) {
+    commit('deleteGoods', payload);
+  },
+  // 改变商品数量
+  numOperation({ commit }, payload) {
+    commit('numOperation', payload);
   },
 };
 
